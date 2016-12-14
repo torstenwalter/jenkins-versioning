@@ -4,9 +4,15 @@
     <groupId>de.torstenwalter.examples</groupId>
     <artifactId>jenkins-versioning</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>jenkins-versioning</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <baseRevision>1.0</baseRevision>
+        <revision>${baseRevision}-SNAPSHOT</revision>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -15,4 +21,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <revision>${baseRevision}-${env.BUILD_NUMBER}</revision>
+            </properties>
+        </profile>
+    </profiles>
 </project>
